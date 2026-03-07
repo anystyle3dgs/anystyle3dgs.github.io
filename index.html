@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnyStyle: Single-Pass Multimodal Stylization for 3D Gaussian Splatting</title>
+
+    <!-- DaisyUI + Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* Fix for Font Awesome brand icons in buttons */
+        .btn i.fab {
+            display: inline-block;
+        }
+    </style>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .placeholder-box {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-weight: 600;
+            border-radius: 1rem;
+        }
+
+        .hero-simple {
+            background: #ffffff;
+            color: #1a1a1a;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .author-link {
+            color: #4b5563;
+            transition: color 0.2s;
+        }
+
+        .author-link:hover {
+            color: #1a1a1a;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-base-200">
+
+    <!-- Hero Section -->
+    <div class="hero hero-simple min-h-[50vh]">
+        <div class="hero-content text-center max-w-4xl px-4 py-16">
+            <div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-gray-900">
+                    AnyStyle: Single-Pass Multimodal Stylization for 3D Gaussian Splatting
+                </h1>
+
+                <div class="text-lg md:text-xl mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
+                    <a href="#" class="author-link">Joanna Kaleta<sup>1</sup></a>
+                    <a href="#" class="author-link">Bartosz Świrta<sup>1</sup></a>
+                    <a href="#" class="author-link">Kacper Kania<sup>1</sup></a>
+                    <a href="#" class="author-link">Przemysław Spurek<sup>1</sup></a>
+                    <a href="#" class="author-link">Marek Kowalski<sup>2</sup></a>
+                </div>
+
+                <div class="text-sm md:text-base mb-8 text-gray-600">
+                    <p><sup>1</sup>Institution Name Placeholder</p>
+                    <p><sup>2</sup>Institution Name Placeholder</p>
+                </div>
+
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <a href="paper.pdf" class="btn btn-outline btn-lg hover:bg-gray-100 gap-2">
+                        <i class="fas fa-file-pdf"></i>
+                        Paper (PDF)
+                    </a>
+                    <a href="https://arxiv.org/abs/2602.04043" target="_blank" class="btn btn-outline btn-lg hover:bg-gray-100 gap-2">
+                        <i class="fas fa-graduation-cap"></i>
+                        arXiv
+                    </a>
+                    <a href="https://github.com/joaxkal/anystyle" target="_blank" class="btn btn-outline btn-lg hover:bg-gray-100 gap-2">
+                        <i class="fas fa-code"></i>
+                        Code
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container mx-auto max-w-6xl px-4 py-12">
+
+        <!-- Teaser Figure Section -->
+        <section class="mb-16">
+            <div class="placeholder-box h-[400px] md:h-[500px]">
+                <div class="text-center">
+                    <i class="fas fa-image text-6xl mb-4 opacity-50"></i>
+                    <p class="text-xl">Teaser Figure - Coming Soon</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Abstract Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Abstract</h2>
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <p class="text-lg leading-relaxed text-justify">
+                        The growing demand for rapid and scalable 3D asset creation has driven interest in feed-forward 3D reconstruction
+                        methods, with 3D Gaussian Splatting (3DGS) emerging as an effective scene representation. While recent approaches have
+                        demonstrated pose-free reconstruction from unposed image collections, integrating stylization or appearance control into
+                        such pipelines remains underexplored. Existing attempts largely rely on image-based conditioning, which limits both
+                        controllability and flexibility. In this work, we introduce AnyStyle, a feed-forward 3D reconstruction and stylization
+                        framework that enables pose-free, zero-shot stylization through multimodal conditioning. Our method supports both
+                        textual and visual style inputs, allowing users to control the scene appearance using natural language descriptions or
+                        reference images. We propose a modular stylization architecture that requires only minimal architectural modifications
+                        and can be integrated into existing feed-forward 3D reconstruction backbones. Experiments demonstrate that AnyStyle
+                        improves style controllability over prior feed-forward stylization methods while preserving high-quality geometric
+                        reconstruction. A user study further confirms that AnyStyle achieves superior stylization quality compared to an
+                        existing state-of-the-art approach.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Results</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="placeholder-box h-64">
+                    <div class="text-center">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p>Animation 1</p>
+                    </div>
+                </div>
+                <div class="placeholder-box h-64">
+                    <div class="text-center">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p>Animation 2</p>
+                    </div>
+                </div>
+                <div class="placeholder-box h-64">
+                    <div class="text-center">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p>Animation 3</p>
+                    </div>
+                </div>
+                <div class="placeholder-box h-64">
+                    <div class="text-center">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p>Animation 4</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Citation Section -->
+        <section class="mb-16">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Citation</h2>
+                <button onclick="copyCitation()" class="btn btn-outline btn-sm md:btn-md gap-2">
+                    <i class="fas fa-copy"></i>
+                    <span id="copy-text">Copy BibTeX</span>
+                </button>
+            </div>
+            <div class="mockup-code bg-neutral text-neutral-content relative">
+<pre><code id="bibtex-citation">
+  @article{kaleta2026anystyle,
+    title     = {AnyStyle: Single-Pass Multimodal Stylization for 3D Gaussian Splatting},
+    author    = {Kaleta, Joanna and Świrta, Bartosz and Kania, Kacper and Spurek, Przemysław and Kowalski, Marek},
+    journal   = {arXiv preprint arXiv:2602.04043},
+    year      = {2026}
+  }</code></pre>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-10 bg-base-300 text-base-content">
+        <div>
+            <p class="font-semibold text-lg">AnyStyle</p>
+            <p>Single-Pass Multimodal Stylization for 3D Gaussian Splatting</p>
+            <p class="text-sm opacity-70">© 2026 - All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCitation() {
+            const citation = document.getElementById('bibtex-citation').textContent;
+            const copyButton = document.getElementById('copy-text');
+
+            navigator.clipboard.writeText(citation).then(() => {
+                // Change button text to show success
+                const originalText = copyButton.innerHTML;
+                copyButton.innerHTML = 'Copied!';
+                copyButton.parentElement.classList.add('btn-success');
+                copyButton.parentElement.classList.remove('btn-outline');
+
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyButton.innerHTML = originalText;
+                    copyButton.parentElement.classList.remove('btn-success');
+                    copyButton.parentElement.classList.add('btn-outline');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy citation:', err);
+                copyButton.innerHTML = 'Failed to copy';
+                setTimeout(() => {
+                    copyButton.innerHTML = 'Copy BibTeX';
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
