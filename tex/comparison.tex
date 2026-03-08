@@ -1,0 +1,64 @@
+
+\documentclass{standalone}
+\usepackage{tabularx} % add tabularx package
+\usepackage{booktabs} % add booktabs package for nicer horizontal rules
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+\usepackage{pifont}
+\newcommand{\best}[1]{\cellcolor{red!25}{#1}}
+\newcommand{\second}[1]{\cellcolor{red!10}{#1}}
+\newcommand{\cmark}{\textcolor{green!70!black}{\ding{51}}} % ✓
+\newcommand{\xmark}{\textcolor{red!70!black}{\ding{55}}}   % ✗
+\def\our{AnyStyle}
+\begin{document}
+\centering
+\begin{tabular}{@{}l@{\;}ccccc@{}}
+\toprule
+\multirow{2}{*}{Method} &
+Multimodal &
+Scene &
+Style &
+Pose &
+Fast \\
+& Style Input
+& Zero-Shot
+& Zero-Shot
+& Free
+& Inference \\
+\midrule
+% ARF~\citeyearpar{zhang2022arf}, SNeRF~\citeyearpar{nguyenphuoc2022snerf}, StylizedNeRF~\citeyearpar{huang2022stylizednerf} % \citet{zhang2022arf, nguyenphuoc2022snerf, huang2022stylizednerf}
+% & \xmark & \xmark & \xmark & \xmark & \xmark \\
+% % \citeauthor{liu2023stylerf}
+% StyleRF~\citeyearpar{liu2023stylerf}
+% & \xmark & \xmark & \cmark & \xmark & \xmark \\
+% SGSST~\citeyearpar{galerne2025sgsst}, G-Style~\citeyearpar{kovacs2024gstyle}, StylizedGS~\citeyearpar{zhang2024stylizedgs}
+% % \citeauthor{galerne2025sgsst, kovacs2024gstyle, zhang2024stylizedgs}
+% & \xmark & \xmark & \xmark & \xmark & \cmark \\
+% StyleGaussian~\citeyearpar{liu2023stylegaussian}
+% & \xmark & \xmark & \cmark & \xmark & \cmark \\
+% ClipGaussian~\citeyearpar{howil2025clipgaussian}
+% & \cmark & \xmark & \xmark & \xmark & \cmark \\
+% Stylos~\citeyearpar{liu2025stylos}, Styl3r~\citeyearpar{wang2025styl3r}
+% & \xmark & \cmark & \cmark & \cmark & \cmark \\
+% \midrule
+ARF, SNeRF, StylizedNeRF % \citet{zhang2022arf, nguyenphuoc2022snerf, huang2022stylizednerf}
+& \xmark & \xmark & \xmark & \xmark & \xmark \\
+% \citeauthor{liu2023stylerf}
+StyleRF
+& \xmark & \xmark & \cmark & \xmark & \xmark \\
+SGSST, G-Style, StylizedGS
+% \citeauthor{galerne2025sgsst, kovacs2024gstyle, zhang2024stylizedgs}
+& \xmark & \xmark & \xmark & \xmark & \cmark \\
+StyleGaussian
+& \xmark & \xmark & \cmark & \xmark & \cmark \\
+ClipGaussian
+& \cmark & \xmark & \xmark & \xmark & \cmark \\
+Stylos, Styl3r
+& \xmark & \cmark & \cmark & \cmark & \cmark \\
+\midrule
+\textbf{\our{}}
+& \cmark & \cmark & \cmark & \cmark & \cmark \\
+\bottomrule
+\end{tabular}
+\end{document}

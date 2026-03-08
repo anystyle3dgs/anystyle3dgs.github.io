@@ -1,0 +1,37 @@
+[
+    {
+        "filename": "./supplementary/normalized/01_Anystyle_re10k_image_vs_text.mp4",
+        "timestamps": [
+            200,
+            408,
+            622,
+            808,
+            1000,
+            1230
+        ],
+        "rows": 3,
+        "split_dir": "re10k_image_vs_text"
+    },
+    {
+        "filename": "./supplementary/normalized/02_Anystyle_re10k_natural_text_prompts.mp4",
+        "timestamps": [
+            150,
+            242,
+            379,
+            471
+        ],
+        "rows": 2,
+        "split_dir": "re10k_natural_text_prompts"
+    },
+    {
+        "filename": "./supplementary/normalized/03_Stylos_vs_Anystyle_comparison.mp4",
+        "timestamps": [
+            100,
+            346,
+            560,
+            784
+        ],
+        "rows": 3,
+        "split_dir": "stylos_vs_anystyle_comparison"
+    }
+]

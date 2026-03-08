@@ -142,16 +142,16 @@ This is the landing page for the AnyStyle research paper: "Single-Pass Multimoda
 ## Future Improvements
 
 ### High Priority
-- [ ] Add real teaser figure from paper
-- [ ] Add result videos/animations
-- [ ] Fill in author profile links
+- [x] Add real teaser figure from paper (✅ `assets/teaser.jpg`)
+- [x] Add result videos/animations (✅ Swiper carousel with split clips)
+- [ ] Fill in author profile links (Bartosz Świrta still points to `#`)
 - [ ] Add supplementary materials section (if available)
 - [ ] Add project video (if created)
 
 ### Medium Priority
-- [ ] Add comparison section showing improvements over prior work
+- [x] Add comparison section showing improvements over prior work (✅ `assets/comparison.jpg` in teaser)
 - [ ] Add interactive demo or viewer (if applicable for 3D content)
-- [ ] Add "Method" section with architecture diagram
+- [x] Add "Method" section with architecture diagram (✅ `assets/method.jpg`)
 - [ ] Add acknowledgments section
 - [x] Implement copy-to-clipboard for BibTeX citation (✅ Completed)
 
@@ -368,4 +368,83 @@ If collaborators need to make updates:
   - DaisyUI + Tailwind implementation
   - Hero, Abstract, Results placeholders, Citation sections
   - Responsive design
+
+---
+
+## Video Pipeline (`split_videos.py`)
+
+> **Run with:** `uv run split_videos.py`  (plain `python3` will miss the venv dependencies)
+
+### Purpose
+Converts the raw supplementary videos into per-scene, per-row MP4 clips used by the Swiper carousel.
+
+### Source material
+Download **supplementary.zip** from the OpenReview submission and extract the three `.mp4` files to `supplementary/`:
+- `01_Anystyle_re10k_image_vs_text.mp4`
+- `02_Anystyle_re10k_natural_text_prompts.mp4`
+- `03_Stylos_vs_Anystyle_comparison.mp4`
+
+### Pipeline — two passes
+
+**Pass 1 — Normalize to 25 fps**
+- Re-encodes each source video to 25 fps using `ffmpeg` (H.264, CRF 17, preset slow).
+- Output: `supplementary/normalized/<filename>.mp4`
+- Updates `files.json` in-place with new paths and adds a `split_dir` key.
+- If source is already in `normalized/` (idempotent re-run), re-encoding is skipped.
+
+**Pass 2 — Split into carousel clips**
+- `timestamps` in `files.json` are **frame numbers at 25 fps** (not seconds, not original fps).
+- Segment 0 (frames 0 → `timestamps[0]−1`) is the **intro — discarded**.
+- Remaining segments are each cropped vertically into `rows` equal-height sub-clips using ffmpeg `trim` + `crop` filters (frame-accurate, no keyframe approximation).
+- Output: `supplementary/splits/<split_dir>/{0,1,2,...}.mp4` (segment-major, row-minor order).
+
+### `files.json` schema
+```json
+{
+  "filename": "./supplementary/normalized/<file>.mp4",  // updated by pass 1
+  "timestamps": [100, 346, 560, 784],                   // frame numbers at 25 fps
+  "rows": 3,                                            // vertical sub-clips per segment
+  "split_dir": "stylos_vs_anystyle_comparison"          // output subdirectory name
+}
+```
+
+### Carousel wiring
+`index.html` reads `CAROUSELS` JS config (hardcoded) that maps each `split_dir` to a Swiper instance. Videos are built dynamically in JS — no hardcoded `<video>` tags.
+
+---
+
+## Static Assets
+
+- `assets/teaser.jpg` — main teaser figure (provided)
+- `assets/method.jpg` — architecture diagram (provided)
+- `assets/comparison.jpg` — method comparison table, rasterised from `tex/comparison.pdf`:
+  ```bash
+  magick -density 400 tex/comparison.pdf -quality 95 assets/comparison.jpg
+  ```
+
+---
+
+## Lighthouse Scores (as of v2.0)
+
+| Category | Score |
+|----------|-------|
+| Accessibility | 96 |
+| Best Practices | 100 |
+| SEO | 100 |
+
+Remaining advisory: Swiper pagination dots are slightly below the 24 px touch-target recommendation — acceptable visual tradeoff.
+
+---
+
+## Version History (continued)
+
+- **v2.0** (2026-03-08): Video carousels, assets, and quality improvements
+  - Added `split_videos.py` — two-pass ffmpeg pipeline (normalize + split)
+  - Three Swiper.js carousels in Results section (image/text conditioning, natural prompts, Stylos comparison)
+  - Nav arrows moved outside `overflow:hidden` with per-carousel IDs to prevent clipping
+  - Method section with edge-to-edge architecture diagram
+  - Teaser section: `assets/teaser.jpg` + `assets/comparison.jpg` side-by-side (40/60 split) with figcaptions
+  - Added emoji favicon, meta description, `<main>` landmark
+  - Lighthouse Best Practices 96→100, SEO 91→100, Accessibility 94→96
+  - Added `README.md` with full reproduction instructions
   - Font Awesome icons

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnyStyle: Single-Pass Multimodal Stylization for 3D Gaussian Splatting</title>
+    <meta name="description" content="AnyStyle: a feed-forward 3D reconstruction and stylization framework enabling pose-free, zero-shot stylization of 3D Gaussian Splatting scenes through multimodal text and image conditioning.">
+
+    <!-- Emoji favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
 
     <!-- DaisyUI + Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
@@ -12,12 +16,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    <style>
-        /* Fix for Font Awesome brand icons in buttons */
-        .btn i.fab {
-            display: inline-block;
-        }
-    </style>
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,17 +26,6 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .placeholder-box {
-            background: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            font-weight: 600;
-            border-radius: 1rem;
         }
 
         .hero-simple {
@@ -48,34 +38,62 @@
             color: #4b5563;
             transition: color 0.2s;
         }
-
         .author-link:hover {
             color: #1a1a1a;
             text-decoration: underline;
+        }
+
+        /* Carousel — nav buttons live outside the overflow:hidden swiper,
+           inside a positioned wrapper, so they are never clipped. */
+        .carousel-swiper {
+            --swiper-theme-color: #1a1a1a;
+            padding-bottom: 44px !important;
+        }
+        .swiper-button-next,
+        .swiper-button-prev {
+            --swiper-navigation-size: 18px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 50%;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
+        }
+        /* Bigger tap targets for pagination dots (Lighthouse touch-target fix) */
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px !important;
+        }
+        .swiper-pagination-bullet-active {
+            background: #1a1a1a;
         }
     </style>
 </head>
 <body class="bg-base-200">
 
+<main>
     <!-- Hero Section -->
     <div class="hero hero-simple min-h-[50vh]">
         <div class="hero-content text-center max-w-4xl px-4 py-16">
             <div>
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-gray-900">
-                    AnyStyle: Single-Pass Multimodal Stylization for 3D Gaussian Splatting
+                    🎨 AnyStyle: Single-Pass Multimodal Stylization for 3D Gaussian Splatting 🎨
                 </h1>
 
                 <div class="text-lg md:text-xl mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
-                    <a href="#" class="author-link">Joanna Kaleta<sup>1</sup></a>
+                    <a href="https://scholar.google.com/citations?user=dN6uh28AAAAJ&hl=en" class="author-link">Joanna Kaleta<sup>1,2</sup></a>
                     <a href="#" class="author-link">Bartosz Świrta<sup>1</sup></a>
-                    <a href="#" class="author-link">Kacper Kania<sup>1</sup></a>
-                    <a href="#" class="author-link">Przemysław Spurek<sup>1</sup></a>
-                    <a href="#" class="author-link">Marek Kowalski<sup>2</sup></a>
+                    <a href="https://kacper.ai/" class="author-link">Kacper Kania<sup>1</sup></a>
+                    <a href="https://scholar.google.pl/citations?user=0kp0MbgAAAAJ&hl=en" class="author-link">Przemysław Spurek<sup>3,4</sup></a>
+                    <a href="https://scholar.google.com/citations?user=n137ACEAAAAJ&hl=en" class="author-link">Marek Kowalski<sup>4,5</sup></a>
                 </div>
 
                 <div class="text-sm md:text-base mb-8 text-gray-600">
-                    <p><sup>1</sup>Institution Name Placeholder</p>
-                    <p><sup>2</sup>Institution Name Placeholder</p>
+                    <p><sup>1</sup>University of Science and Technology</p>
+                    <p><sup>2</sup>Sano Centre for Computational Medicine</p>
+                    <p><sup>3</sup>Jagiellonian University</p>
+                    <p><sup>4</sup>IDEAS NCBR</p>
+                    <p><sup>5</sup>Microsoft</p>
                 </div>
 
                 <div class="flex flex-wrap gap-3 justify-center">
@@ -100,13 +118,17 @@
     <div class="container mx-auto max-w-6xl px-4 py-12">
 
         <!-- Teaser Figure Section -->
-        <section class="mb-16">
-            <div class="placeholder-box h-[400px] md:h-[500px]">
-                <div class="text-center">
-                    <i class="fas fa-image text-6xl mb-4 opacity-50"></i>
-                    <p class="text-xl">Teaser Figure - Coming Soon</p>
+        <section class="mb-16 flex flex-col md:flex-row items-stretch gap-6">
+            <figure class="w-full md:w-2/5 flex flex-col">
+                <img src="assets/teaser.jpg" alt="AnyStyle teaser: any scene and any style input yields stylized 3D Gaussians in under 0.1s" class="w-full rounded-xl shadow-xl object-contain flex-1">
+                <figcaption class="text-sm text-center text-gray-400 mt-2">AnyStyle accepts any scene and any style — image or text — and outputs stylized 3D Gaussians in a single forward pass.</figcaption>
+            </figure>
+            <figure class="w-full md:w-3/5 flex flex-col">
+                <div class="flex-1 flex items-center justify-center bg-white rounded-xl shadow-xl p-6">
+                    <img src="assets/comparison.jpg" alt="Comparison of AnyStyle against prior methods across key properties" class="w-full">
                 </div>
-            </div>
+                <figcaption class="text-sm text-center text-gray-400 mt-2">AnyStyle is the only method that is simultaneously multimodal, scene zero-shot, style zero-shot, pose-free, and fast.</figcaption>
+            </figure>
         </section>
 
         <!-- Abstract Section -->
@@ -132,34 +154,60 @@
             </div>
         </section>
 
-        <!-- Results Section -->
+        <!-- Method Section -->
         <section class="mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Results</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="placeholder-box h-64">
-                    <div class="text-center">
-                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
-                        <p>Animation 1</p>
-                    </div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Method</h2>
+            <!-- Image fills the card edge-to-edge (no card-body padding) -->
+            <div class="card bg-base-100 shadow-xl overflow-hidden">
+                <img src="assets/method.jpg" alt="AnyStyle architecture: style branch injected into AnySplat backbone via zero-conv layers" class="w-full block">
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-3 text-gray-900">Results</h2>
+            <p class="text-base text-gray-500">Use the arrows or swipe to browse scenes. Each slide shows reconstruction alongside image- and text-prompted stylizations.</p>
+        </section>
+
+        <!-- Image & Text Style Conditioning -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold mb-2 text-gray-900">Image &amp; Text Style Conditioning</h3>
+            <!-- Description placeholder: replace comment with your text -->
+            <div class="relative px-10">
+                <div class="swiper carousel-swiper overflow-hidden rounded-xl shadow-xl bg-base-100" id="swiper-image-text">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="placeholder-box h-64">
-                    <div class="text-center">
-                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
-                        <p>Animation 2</p>
-                    </div>
+                <div class="swiper-button-prev" id="prev-image-text"></div>
+                <div class="swiper-button-next" id="next-image-text"></div>
+            </div>
+        </section>
+
+        <!-- Natural Language Prompts -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold mb-2 text-gray-900">Natural Language Prompts</h3>
+            <!-- Description placeholder: replace comment with your text -->
+            <div class="relative px-10">
+                <div class="swiper carousel-swiper overflow-hidden rounded-xl shadow-xl bg-base-100" id="swiper-text-prompts">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="placeholder-box h-64">
-                    <div class="text-center">
-                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
-                        <p>Animation 3</p>
-                    </div>
+                <div class="swiper-button-prev" id="prev-text-prompts"></div>
+                <div class="swiper-button-next" id="next-text-prompts"></div>
+            </div>
+        </section>
+
+        <!-- Comparison with Stylos -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold mb-2 text-gray-900">Comparison with Stylos</h3>
+            <!-- Description placeholder: replace comment with your text -->
+            <div class="relative px-10">
+                <div class="swiper carousel-swiper overflow-hidden rounded-xl shadow-xl bg-base-100" id="swiper-comparison">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="placeholder-box h-64">
-                    <div class="text-center">
-                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
-                        <p>Animation 4</p>
-                    </div>
-                </div>
+                <div class="swiper-button-prev" id="prev-comparison"></div>
+                <div class="swiper-button-next" id="next-comparison"></div>
             </div>
         </section>
 
@@ -184,6 +232,7 @@
         </section>
 
     </div>
+</main>
 
     <!-- Footer -->
     <footer class="footer footer-center p-10 bg-base-300 text-base-content">
@@ -195,18 +244,71 @@
     </footer>
 
     <script>
+        // ── Carousel setup ───────────────────────────────────────────────────
+        const CAROUSELS = [
+            { id: 'swiper-image-text',   prevId: 'prev-image-text',   nextId: 'next-image-text',   dir: 're10k_image_vs_text',          segments: 6, rows: 3 },
+            { id: 'swiper-text-prompts', prevId: 'prev-text-prompts', nextId: 'next-text-prompts', dir: 're10k_natural_text_prompts',   segments: 4, rows: 2 },
+            { id: 'swiper-comparison',   prevId: 'prev-comparison',   nextId: 'next-comparison',   dir: 'stylos_vs_anystyle_comparison', segments: 4, rows: 3 },
+        ];
+
+        function buildSlides(id, dir, segments, rows) {
+            const wrapper = document.querySelector(`#${id} .swiper-wrapper`);
+            let idx = 0;
+            for (let s = 0; s < segments; s++) {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                for (let r = 0; r < rows; r++) {
+                    const video = document.createElement('video');
+                    video.loop = true;
+                    video.muted = true;
+                    video.playsInline = true;
+                    video.className = 'w-full block';
+                    const source = document.createElement('source');
+                    source.src = `./supplementary/splits/${dir}/${idx}.mp4`;
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    slide.appendChild(video);
+                    idx++;
+                }
+                wrapper.appendChild(slide);
+            }
+        }
+
+        function playSlide(slide) {
+            slide.querySelectorAll('video').forEach(v => { v.currentTime = 0; v.play(); });
+        }
+
+        function pauseAll(swiper) {
+            swiper.slides.forEach(s => s.querySelectorAll('video').forEach(v => v.pause()));
+        }
+
+        CAROUSELS.forEach(({ id, prevId, nextId, dir, segments, rows }) => {
+            buildSlides(id, dir, segments, rows);
+            const sw = new Swiper(`#${id}`, {
+                loop: false,
+                pagination: { el: `#${id} .swiper-pagination`, clickable: true },
+                navigation: {
+                    prevEl: `#${prevId}`,
+                    nextEl: `#${nextId}`,
+                },
+                on: {
+                    afterInit(sw) { playSlide(sw.slides[sw.activeIndex]); },
+                    slideChangeTransitionStart(sw) { pauseAll(sw); },
+                    slideChangeTransitionEnd(sw) { playSlide(sw.slides[sw.activeIndex]); },
+                },
+            });
+        });
+        // ─────────────────────────────────────────────────────────────────────
+
         function copyCitation() {
             const citation = document.getElementById('bibtex-citation').textContent;
             const copyButton = document.getElementById('copy-text');
 
             navigator.clipboard.writeText(citation).then(() => {
-                // Change button text to show success
                 const originalText = copyButton.innerHTML;
                 copyButton.innerHTML = 'Copied!';
                 copyButton.parentElement.classList.add('btn-success');
                 copyButton.parentElement.classList.remove('btn-outline');
-
-                // Reset after 2 seconds
                 setTimeout(() => {
                     copyButton.innerHTML = originalText;
                     copyButton.parentElement.classList.remove('btn-success');
@@ -215,9 +317,7 @@
             }).catch(err => {
                 console.error('Failed to copy citation:', err);
                 copyButton.innerHTML = 'Failed to copy';
-                setTimeout(() => {
-                    copyButton.innerHTML = 'Copy BibTeX';
-                }, 2000);
+                setTimeout(() => { copyButton.innerHTML = 'Copy BibTeX'; }, 2000);
             });
         }
     </script>
